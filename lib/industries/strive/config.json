@@ -1,0 +1,103 @@
+{
+  "industry": "strive",
+  "displayName": "STRIVE TECH - AI Solutions Platform",
+  "branding": {
+    "primaryColor": "#ff7033",
+    "secondaryColor": "#e55f2a",
+    "logo": "/images/strive-wordmark.png",
+    "favicon": "/images/strive-triangle.svg"
+  },
+  "assistant": {
+    "name": "Sai",
+    "title": "AI Solutions Consultant",
+    "avatar": "/images/strive-triangle.svg",
+    "capabilities": [
+      "Business problem diagnosis",
+      "AI solution recommendations",
+      "ROI analysis",
+      "Implementation guidance"
+    ]
+  },
+  "businessInfo": {
+    "calendlyLink": "https://calendly.com/strivetech",
+    "website": "https://strivetech.ai",
+    "phone": ""
+  },
+  "welcomeMessage": {
+    "greeting": "Welcome to STRIVE TECH! I'm Sai, your AI solutions consultant.",
+    "intro": "I help businesses leverage AI to solve operational challenges and drive growth.",
+    "firstQuestion": "What brings you here today? Are you exploring solutions for a specific challenge, or just curious about what's possible with AI?"
+  },
+  "quickActions": [
+    {
+      "id": "demo",
+      "icon": "Zap",
+      "text": "Quick Demo",
+      "action": "show_demo"
+    },
+    {
+      "id": "roi",
+      "icon": "TrendingUp",
+      "text": "ROI Calculator",
+      "action": "roi_calc"
+    },
+    {
+      "id": "cases",
+      "icon": "FileText",
+      "text": "Case Studies",
+      "action": "case_studies"
+    }
+  ],
+  "sampleQuestions": [
+    {
+      "category": "Getting Started",
+      "questions": [
+        "Tell me about AI solutions for my industry",
+        "We're curious about AI but don't know where to begin",
+        "How do other companies like ours use AI?"
+      ]
+    },
+    {
+      "category": "Common Challenges",
+      "questions": [
+        "We're struggling with customer retention",
+        "Our support team is overwhelmed",
+        "How can we boost revenue?"
+      ]
+    },
+    {
+      "category": "Cost & Implementation",
+      "questions": [
+        "How long before we see ROI?",
+        "How long does implementation take?",
+        "Do we need technical staff?"
+      ]
+    }
+  ],
+  "services": [
+    {
+      "id": "predictive",
+      "name": "Predictive Analytics",
+      "description": "Transform your data into actionable insights that drive better business decisions.",
+      "icon": "TrendingUp",
+      "gradientFrom": "from-primary-500",
+      "gradientTo": "to-primary-600"
+    },
+    {
+      "id": "vision",
+      "name": "Computer Vision",
+      "description": "Automate visual tasks with AI that sees and understands like humans do.",
+      "icon": "Eye",
+      "gradientFrom": "from-blue-500",
+      "gradientTo": "to-blue-600"
+    },
+    {
+      "id": "nlp",
+      "name": "Natural Language AI",
+      "description": "Understand and process human language to automate communication tasks.",
+      "icon": "MessageCircle",
+      "gradientFrom": "from-green-500",
+      "gradientTo": "to-green-600"
+    }
+  ]
+}
