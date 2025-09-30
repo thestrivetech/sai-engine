@@ -1,12 +1,12 @@
-// app/page.tsx
+// app/full/page.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import ChatContainer from './components/chat/ChatContainer';
-import parentComm from './utils/parentCommunication';
+import ChatContainer from '../components/chat/ChatContainer';
+import parentComm from '../utils/parentCommunication';
 
-export default function Home() {
+export default function FullPage() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -14,23 +14,8 @@ export default function Home() {
     document.documentElement.classList.add('dark');
     document.body.classList.add('fullpage-mode');
     
-    // Initialize parent communication
     if (typeof window !== 'undefined') {
       parentComm.initializeWhenReady();
-      
-      // Backup messages
-      const timer1 = setTimeout(() => {
-        parentComm.initializeWhenReady();
-      }, 1000);
-
-      const timer3 = setTimeout(() => {
-        parentComm.initializeWhenReady();
-      }, 3000);
-
-      return () => {
-        clearTimeout(timer1);
-        clearTimeout(timer3);
-      };
     }
   }, []);
 
@@ -48,7 +33,7 @@ export default function Home() {
               }}
             />
           </div>
-          <p className="text-gray-200 font-medium text-lg">Loading AI Solutions Platform...</p>
+          <p className="text-gray-200 font-medium text-lg">Loading...</p>
         </div>
       </div>
     );
@@ -74,13 +59,6 @@ export default function Home() {
           </motion.div>
         </div>
       </div>
-
-      {/* Dev indicator */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="fixed bottom-4 left-4 text-xs text-gray-400 bg-gray-800 bg-opacity-80 px-3 py-2 rounded-lg backdrop-blur-sm shadow-lg border border-gray-600">
-          Dev Mode • Next.js
-        </div>
-      )}
     </div>
   );
 }
