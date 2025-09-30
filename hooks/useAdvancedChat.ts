@@ -133,11 +133,3 @@ export const useIdleDetection = (timeout: number = 60000) => {
   
   return isIdle;
 };
-
-// Export all hooks
-export default {
-  useKeyboardShortcuts,
-  useTimeBasedGreeting,
-  useNetworkStatus,
-  useIdleDetection
-};

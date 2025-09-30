@@ -4,7 +4,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Loader2, Square, MessageSquare, Calendar, Sparkles, Zap, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useIdleDetection } from '@/app/hooks/useAdvancedChat';
+import { useIdleDetection } from '@/hooks/useAdvancedChat';
 
 interface ChatInputProps {
   onSendMessage: (message: string) => void;

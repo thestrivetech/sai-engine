@@ -1,4 +1,4 @@
-// app/hooks/useChat.ts
+// hooks/useChat.ts
 'use client';
 
 import { useState, useCallback, useRef, useEffect } from 'react';
@@ -99,7 +99,6 @@ const performBasicGrammarCheck = (text: string): string => {
 };
 
 // Client-side problem detection (lightweight version)
-// Full RAG-enhanced detection happens server-side
 const detectProblemsClientSide = (message: string): ProblemDetection[] => {
   const lowerMessage = message.toLowerCase();
   const detected: ProblemDetection[] = [];
@@ -294,6 +293,15 @@ export const useChat = (industry: string = 'strive') => {
           content: m.content
         }));
 
+      // ✅ ADD DATE CONTEXT - Prepend current date as system message
+      const messagesWithContext = [
+        {
+          role: 'system' as const,
+          content: getCurrentDateContext()
+        },
+        ...apiMessages
+      ];
+
       // 🔥 CRITICAL: Call Next.js API route with RAG integration
       const response = await fetch('/api/chat', {
         method: 'POST',
@@ -301,7 +309,7 @@ export const useChat = (industry: string = 'strive') => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          messages: apiMessages,
+          messages: messagesWithContext, // ✅ CHANGED: includes date context
           industry, // For multi-industry RAG
           sessionId: sessionIdRef.current, // For conversation tracking
           conversationStage: newStage,

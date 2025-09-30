@@ -3,8 +3,8 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import ChatContainer from './components/chat/ChatContainer';
-import parentComm from './utils/parentCommunication';
+import ChatContainer from '@/components/chat/ChatContainer';
+import parentComm from '@/app/utils/parentCommunication';
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);

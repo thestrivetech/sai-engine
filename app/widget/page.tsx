@@ -2,8 +2,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import ChatContainer from '../components/chat/ChatContainer';
-import parentComm from '../utils/parentCommunication';
+import ChatContainer from '@/components/chat/ChatContainer';
+import parentComm from '@/app/utils/parentCommunication';
 
 export default function WidgetPage() {
   const [mounted, setMounted] = useState(false);

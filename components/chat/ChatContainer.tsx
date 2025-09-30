@@ -10,10 +10,10 @@ import {
 } from 'lucide-react';
 import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
-import { useChat } from '@/app/hooks/useChat';
+import { useChat } from '@/hooks/useChat';
 import { URLS, SERVICE_CARDS } from '@/app/constants/chatConstants';
-import { useTimeBasedGreeting, useKeyboardShortcuts } from '@/app/hooks/useAdvancedChat';
-import useScrollManager from '@/app/hooks/useScrollManager';
+import { useTimeBasedGreeting, useKeyboardShortcuts } from '@/hooks/useAdvancedChat';
+import useScrollManager from '@/hooks/useScrollManager';
 import parentComm from '@/app/utils/parentCommunication';
 
 // Quick action suggestions component

@@ -2,6 +2,7 @@
 
 import { createClient } from '@supabase/supabase-js';
 import OpenAI from 'openai';
+import { CacheService } from './cache-service';  // ✅ ADD THIS IMPORT
 import {
   SemanticSearchResult,
   SimilarConversation,
@@ -20,19 +21,54 @@ const openai = new OpenAI({
 
 export class RAGService {
   /**
-   * Generate embedding for text using OpenAI
+   * Generate embedding for text using OpenAI (WITH CACHING)
    */
   static async generateEmbedding(text: string): Promise<number[]> {
+    // ✅ CREATE CACHE KEY
+    const cacheKey = CacheService.createKey('embedding', this.hashText(text));
+    
+    // ✅ CHECK CACHE FIRST
+    const cached = CacheService.get<number[]>(cacheKey);
+    if (cached) {
+      console.log('✅ Embedding cache HIT - saved $0.0001');
+      return cached;
+    }
+
+    // ✅ CACHE MISS - Generate new embedding
+    console.log('💰 Generating new embedding (costs $0.0001)');
     const response = await openai.embeddings.create({
       model: 'text-embedding-ada-002',
       input: text,
     });
     
-    return response.data[0].embedding;
+    const embedding = response.data[0].embedding;
+    
+    // ✅ STORE IN CACHE (24 hours)
+    CacheService.set(cacheKey, embedding, 86400); // 24 hours
+    
+    return embedding;
   }
 
   /**
-   * Search for similar conversations using vector similarity
+   * Simple hash function for cache keys
+   */
+  private static hashText(text: string): string {
+    // Normalize text for caching
+    const normalized = text.toLowerCase().trim().replace(/\s+/g, ' ');
+    
+    // Simple hash (good enough for caching similar queries)
+    let hash = 0;
+    for (let i = 0; i < normalized.length; i++) {
+      const char = normalized.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash; // Convert to 32-bit integer
+    }
+    
+    return `${hash}_${normalized.substring(0, 50)}`;
+  }
+
+  /**
+   * Search for similar conversations using vector similarity (WITH CACHING)
    */
   static async searchSimilarConversations(
     userMessage: string,
@@ -49,7 +85,18 @@ export class RAGService {
       includeExamples = true,
     } = options;
 
-    // Generate embedding for user message
+    // ✅ CHECK RAG CACHE
+    const ragCacheKey = CacheService.createKey('rag', industry, this.hashText(userMessage));
+    const cachedResults = CacheService.get<SemanticSearchResult>(ragCacheKey);
+    
+    if (cachedResults) {
+      console.log('✅ RAG search cache HIT');
+      return cachedResults;
+    }
+
+    console.log('🔍 RAG search cache MISS - performing search');
+
+    // Generate embedding (this will use embedding cache)
     const embedding = await this.generateEmbedding(userMessage);
 
     // Search actual conversations
@@ -154,7 +201,7 @@ export class RAGService {
       1
     );
 
-    return {
+    const results: SemanticSearchResult = {
       similarConversations: allResults as SimilarConversation[],
       detectedProblems,
       recommendedSolutions,
@@ -162,7 +209,7 @@ export class RAGService {
         ? {
             approach: bestPattern.assistantResponse,
             conversionScore: bestPattern.conversionScore || 0,
-            stage: 'solutioning', // Could extract from data
+            stage: 'solutioning',
           }
         : undefined,
       confidence: {
@@ -171,6 +218,11 @@ export class RAGService {
         overallConfidence: (avgSimilarity + problemConfidence + solutionConfidence) / 3,
       },
     };
+
+    // ✅ CACHE RAG RESULTS (1 hour)
+    CacheService.set(ragCacheKey, results, 3600);
+
+    return results;
   }
 
   /**
@@ -261,7 +313,7 @@ export class RAGService {
   static async storeConversation(
     conversation: Omit<ConversationEmbedding, 'id' | 'embedding' | 'createdAt' | 'updatedAt'>
   ): Promise<void> {
-    // Generate embedding for user message
+    // Generate embedding for user message (will use cache if available)
     const embedding = await this.generateEmbedding(conversation.userMessage);
 
     const { error } = await supabase.from('conversations').insert({

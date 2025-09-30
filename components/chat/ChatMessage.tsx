@@ -4,9 +4,8 @@
 import React, { memo } from 'react';
 import { User, AlertCircle, Clock, ExternalLink, Calendar } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { MessageSaiAvatar, UserAvatar } from '../Shared/Avatars';
+import { MessageSaiAvatar, UserAvatar } from '../shared/Avatars';
 import { URLS } from '@/app/constants/chatConstants';
-import { buttonAnimation } from '@/app/utils/animationUtils';
 
 interface ChatMessageProps {
   message: {
